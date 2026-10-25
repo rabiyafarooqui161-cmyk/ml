@@ -1,0 +1,13 @@
+from sklearn import tree
+import matplotlib.pyplot as plt
+
+X = [[0, 0], [2, 2]]
+y = [0.5, 2.5]
+
+clf = tree.DecisionTreeRegressor()
+clf = clf.fit(X, y)
+
+print(clf.predict([[1, 1]]))
+
+tree.plot_tree(clf)
+plt.show()
