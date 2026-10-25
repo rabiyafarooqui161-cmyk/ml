@@ -1,0 +1,53 @@
+import heapq
+
+
+def a_star(graph, heuristics, start, goal):
+    open_set = []
+    heapq.heappush(open_set, (heuristics[start], start, [start], 0))
+
+    visited = set()
+
+    while open_set:
+        f_score, current, path, g_score = heapq.heappop(open_set)
+
+        if current == goal:
+            return path, g_score
+
+        if current in visited:
+            continue
+
+        visited.add(current)
+
+        for neighbor, weight in graph.get(current, []):
+            if neighbor not in visited:
+                next_g = g_score + weight
+                next_f = next_g + heuristics.get(neighbor, 0)
+
+                heapq.heappush(
+                    open_set,
+                    (next_f, neighbor, path + [neighbor], next_g)
+                )
+
+    return None, float('inf')
+
+
+graph = {
+    'A': [('B', 1), ('C', 4)],
+    'B': [('C', 2), ('D', 5)],
+    'C': [('D', 1)],
+    'D': []
+}
+
+heuristics = {
+    'A': 4,
+    'B': 2,
+    'C': 1,
+    'D': 0
+}
+
+shortest_path, total_cost = a_star(
+    graph, heuristics, start='A', goal='D'
+)
+
+print(f"Shortest Path: {shortest_path}")
+print(f"Total Cost: {total_cost}")
